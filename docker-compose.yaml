@@ -1,0 +1,10 @@
+services:
+  exercise1:
+    build:
+      context: .
+      target: ex1
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 50M
