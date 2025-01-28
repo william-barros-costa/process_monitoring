@@ -1,8 +1,28 @@
+x-deploy-defaults: &deploy-defaults
+  resources:
+    limits:
+      cpus: '0.50'
+      memory: 50M
+  
+
 services:
   exercise1:
     build:
       context: .
       target: ex1
+      tags: ["ex1:latest"]
+      # deploy: *deploy-defaults
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 50M
+
+  exercise2:
+    build:
+      context: .
+      target: ex2
+      tags: ["ex2:latest"]
     deploy:
       resources:
         limits:

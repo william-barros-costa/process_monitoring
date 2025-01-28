@@ -1,16 +1,25 @@
 FROM ubuntu:latest AS base
+WORKDIR /app
 
 RUN apt-get update && apt-get install -y stress-ng
 
 FROM base AS ex1
+CMD ["sh", "-c", "stress-ng --cpu 1 1>&2 2>/dev/null &", "bash"]
 
-# RUN <<EOF
-# stress-ng --cpu 4 &
-# EOF
+FROM base AS ex2
 
-CMD ["sh", "-c", "stress-ng --cpu 4 2>/dev/null &", "bash"]
+RUN cat <<EOF > ex2.sh
+#!/bin/bash
+stress-ng --cpu 1 --cpu-load 35 1>/dev/null 2>/dev/null &
+stress-ng --cpu 1 --cpu-load 10 1>/dev/null 2>/dev/null &
+sleep 5 && ps -eo pid,%cpu --sort=-%cpu | head -n 2 | tail -n 1 | awk '{print $1}' > answer.txt &
+/bin/bash
+EOF
 
-# FROM base AS ex2
+RUN chmod +x ex2.sh
+
+CMD ["/app/ex2.sh"]
+
 # FROM base AS ex3
 # FROM base AS ex4
 # FROM base AS ex5
