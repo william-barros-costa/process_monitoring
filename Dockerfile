@@ -20,7 +20,49 @@ RUN chmod +x ex2.sh
 
 CMD ["/app/ex2.sh"]
 
-# FROM base AS ex3
+FROM base AS ex3
+
+RUN apt-get update && apt-get install -y supervisor &&\
+    rm -rf /var/lib/apt/lists/*
+
+RUN useradd -m user1 && \
+    useradd -m user2
+
+RUN mkdir -p /app/user1 /app/user2
+RUN chown user1:user1 /app/user1 && \
+    chown user2:user2 /app/user2
+
+RUN cat <<EOF > /etc/supervisor/conf.d/supervisord.conf
+[supervisord]
+nodaemon=true
+
+[program:user1_process]
+command=/bin/bash -c "stress-ng --cpu 1 --cpu-load 15 1>/dev/null 2>/dev/null"
+user=user1
+directory=/app/user1
+autostart=true
+autorestart=true
+
+[program:user2_process]
+command=/bin/bash -c "stress-ng --cpu 1 --cpu-load 25 1>/dev/null 2>/dev/null"
+user=user2
+directory=/app/user2
+autostart=true
+autorestart=true
+EOF
+
+RUN cat <<EOF > ex3.sh
+#!/bin/bash
+echo "Starting processes"
+/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf 1>/dev/null 2>/dev/null &
+sleep 1
+/bin/bash
+EOF
+
+RUN chmod +x ex3.sh
+
+CMD ["/app/ex3.sh"]
+
 # FROM base AS ex4
 # FROM base AS ex5
 # FROM base AS ex6

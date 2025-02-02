@@ -28,3 +28,14 @@ services:
         limits:
           cpus: '0.50'
           memory: 50M
+
+  exercise3:
+    build:
+      context: .
+      target: ex3
+      tags: ["ex3:latest"]
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 50M
