@@ -1,43 +1,46 @@
-x-deploy-defaults: &deploy-defaults
-  resources:
-    limits:
-      cpus: '0.50'
-      memory: 50M
+x-common-exercise: &common-exercise
+  build:
+    context: .
+  deploy:
+    resources:
+      limits:
+        cpus: '0.50'
+        memory: 500M
   
 
 services:
   exercise1:
+    <<: *common-exercise
     build:
-      context: .
       target: ex1
       tags: ["ex1:latest"]
-    deploy: *deploy-defaults
 
   exercise2:
+    <<: *common-exercise
     build:
       context: .
       target: ex2
-      tags: ["ex2:latest"]
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 50M
 
   exercise3:
+    <<: *common-exercise
     build:
-      context: .
       target: ex3
       tags: ["ex3:latest"]
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 50M
 
   exercise4:
+    <<: *common-exercise
     build:
-      context: .
       target: ex4
       tags: ["ex4:latest"]
-    deploy: *deploy-defaults
+
+  exercise5:
+    <<: *common-exercise
+    build:
+      target: ex5
+      tags: ["ex5:latest"]
+
+  exercise6:
+    <<: *common-exercise
+    build:
+      target: ex6
+      tags: ["ex6:latest"]
