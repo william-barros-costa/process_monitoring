@@ -44,3 +44,15 @@ services:
     build:
       target: ex6
       tags: ["ex6:latest"]
+
+  exercise7:
+    <<: *common-exercise
+    build:
+      target: ex7
+      tags: ["ex7:latest"]
+
+  exercise8:
+    <<: *common-exercise
+    build:
+      target: ex8
+      tags: ["ex8:latest"]

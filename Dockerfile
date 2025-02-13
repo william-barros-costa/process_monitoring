@@ -42,3 +42,8 @@ COPY exercises/ex5.conf /etc/supervisor/conf.d/supervisord.conf
 FROM base AS ex6
 COPY exercises/ex6.conf /etc/supervisor/conf.d/supervisord.conf
 
+FROM base AS ex7
+COPY exercises/ex7.conf /etc/supervisor/conf.d/supervisord.conf
+
+FROM base AS ex8
+COPY exercises/ex8.conf /etc/supervisor/conf.d/supervisord.conf
